@@ -71,7 +71,14 @@ function moota_MetaData()
  */
 function moota_config()
 {
-    return array(
+    $paths = explode('/', dirname( $_SERVER['DOCUMENT_URI'] ));
+    array_pop($paths);
+    $paths = implode('/', $paths);
+    $baseUri = $_SERVER['SERVER_NAME'] . realpath(
+        dirname( $_SERVER['DOCUMENT_URI'] ) . '/..'
+    ) . $paths;
+
+    return [
         // the friendly display name for a payment gateway should be
         // defined here for backwards compatibility
         'FriendlyName' => [
@@ -105,7 +112,15 @@ function moota_config()
             'Default' => 'app.moota.co',
             'Description' => 'Only change when asked by Moota',
         ],
-    );
+
+        'mootaPushCallbackUri' => [
+            'FriendlyName' => 'Moota Server Address',
+            'Type' => 'text',
+            'Size' => '255',
+            'Default' => "http://{$baseUri}/modules/gateways/callback/moota.php",
+            'Description' => 'Masuk halaman edit bank di moota &gt; tab notifikasi &gt; edit "API Push Notif" &gt; lalu masukkan url ini',
+        ],
+    ];
 }
 
 /**
@@ -124,6 +139,12 @@ function moota_config()
  */
 function moota_link($params)
 {
+    global $_LANG;
+
+    $code = '<p>'.nl2br($params['instructions']).'<br />'.$_LANG['invoicerefnum'].': '.$params['invoiceid'].'</p>';
+
+    return $code;
+
     // Gateway Configuration Parameters
     $accountId = $params['accountID'];
     $secretKey = $params['secretKey'];
