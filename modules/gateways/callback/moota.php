@@ -99,7 +99,6 @@ checkCbTransID($transactionId);
 logTransaction($gatewayParams['name'], $_POST, $transactionStatus);
 
 if ($success) {
-
     /**
      * Add Invoice Payment.
      *
@@ -118,5 +117,4 @@ if ($success) {
         $paymentFee,
         $gatewayModuleName
     );
-
 }

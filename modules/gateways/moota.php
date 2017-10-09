@@ -41,12 +41,12 @@ if (!defined("WHMCS")) {
  */
 function moota_MetaData()
 {
-    return array(
-        'DisplayName' => 'Sample Payment Gateway Module',
+    return [
+        'DisplayName' => 'Moota Payment Gateway',
         'APIVersion' => '1.1', // Use API Version 1.1
         'DisableLocalCredtCardInput' => true,
         'TokenisedStorage' => false,
-    );
+    ];
 }
 
 /**
@@ -74,58 +74,37 @@ function moota_config()
     return array(
         // the friendly display name for a payment gateway should be
         // defined here for backwards compatibility
-        'FriendlyName' => array(
+        'FriendlyName' => [
             'Type' => 'System',
-            'Value' => 'Sample Third Party Payment Gateway Module',
-        ),
-        // a text field type allows for single line text input
-        'accountID' => array(
-            'FriendlyName' => 'Account ID',
+            'Value' => 'Moota Payment Gateway',
+        ],
+
+        /** string $apiKey */
+        'mootaApiKey' => [
+            'FriendlyName' => 'API Key',
             'Type' => 'text',
-            'Size' => '25',
+            'Size' => '50',
             'Default' => '',
-            'Description' => 'Enter your account ID here',
-        ),
-        // a password field type allows for masked text input
-        'secretKey' => array(
-            'FriendlyName' => 'Secret Key',
-            'Type' => 'password',
-            'Size' => '25',
-            'Default' => '',
-            'Description' => 'Enter secret key here',
-        ),
-        // the yesno field type displays a single checkbox option
-        'testMode' => array(
-            'FriendlyName' => 'Test Mode',
-            'Type' => 'yesno',
-            'Description' => 'Tick to enable test mode',
-        ),
-        // the dropdown field type renders a select menu of options
-        'dropdownField' => array(
-            'FriendlyName' => 'Dropdown Field',
-            'Type' => 'dropdown',
-            'Options' => array(
-                'option1' => 'Display Value 1',
-                'option2' => 'Second Option',
-                'option3' => 'Another Option',
-            ),
-            'Description' => 'Choose one',
-        ),
-        // the radio field type displays a series of radio button options
-        'radioField' => array(
-            'FriendlyName' => 'Radio Field',
-            'Type' => 'radio',
-            'Options' => 'First Option,Second Option,Third Option',
-            'Description' => 'Choose your option!',
-        ),
-        // the textarea field type allows for multi-line text input
-        'textareaField' => array(
-            'FriendlyName' => 'Textarea Field',
-            'Type' => 'textarea',
-            'Rows' => '3',
-            'Cols' => '60',
-            'Description' => 'Freeform multi-line text input field',
-        ),
+            'Description' => 'Enter your Moota account API Key here',
+        ],
+
+        /** integer $apiTimeout */
+        'mootaApiTimeout' => [
+            'FriendlyName' => 'API Access Timeout',
+            'Type' => 'text',
+            'Size' => '2',
+            'Default' => '30',
+            'Description' => 'Timeout, in second',
+        ],
+
+        /** string $serverAddress */
+        'mootaServerAddress' => [
+            'FriendlyName' => 'Moota Server Address',
+            'Type' => 'text',
+            'Size' => '255',
+            'Default' => 'app.moota.co',
+            'Description' => 'Only change when asked by Moota',
+        ],
     );
 }
 
