@@ -17,10 +17,10 @@
  * @license http://www.whmcs.com/license/ WHMCS Eula
  */
 
-// if ( strtolower($_SERVER['REQUEST_METHOD']) !== 'post' ) {
-//     http_response_code(405);
-//     die('Only POST is allowed');
-// }
+if ( strtolower($_SERVER['REQUEST_METHOD']) !== 'post' ) {
+    http_response_code(405);
+    die('Only POST is allowed');
+}
 
 $pwd = getcwd();
 
