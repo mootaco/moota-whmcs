@@ -105,6 +105,15 @@ function moota_config()
         ],
 
         /** string $serverAddress */
+        'mootaEnvironment' => [
+            'FriendlyName' => 'Moota SDK Environment',
+            'Type' => 'text',
+            'Size' => '255',
+            'Default' => 'production',
+            'Description' => '<code>production</code> / <code>testing</code>, only change when asked by Moota',
+        ],
+
+        /** string $serverAddress */
         'mootaServerAddress' => [
             'FriendlyName' => 'Moota Server Address',
             'Type' => 'text',

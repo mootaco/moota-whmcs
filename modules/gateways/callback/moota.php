@@ -49,6 +49,7 @@ if (!$gatewayParams['type']) {
 Config::fromArray([
     'apiKey' => $gatewayParams['mootaApiKey'],
     'apiTimeout' => $gatewayParams['mootaApiTimeout'],
+    'sdkMode' => strtolower( $gatewayParams['mootaEnvironment'] ),
     'serverAddress' => $gatewayParams['mootaServerAddress'],
 ]);
 
