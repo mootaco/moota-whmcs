@@ -1,3 +1,0 @@
-[submodule "modules/gateways/moota/sdk"]
-	path = modules/gateways/moota/sdk
-	url = https://github.com/mootaco/php-sdk

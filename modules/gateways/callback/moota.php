@@ -28,7 +28,7 @@ $pwd = getcwd();
 require_once $pwd . '/../../../init.php';
 require_once $pwd . '/../../../includes/gatewayfunctions.php';
 require_once $pwd . '/../../../includes/invoicefunctions.php';
-require_once $pwd . '/../moota/sdk/bootstrap.php';
+require_once $pwd . '/../moota/autoload.php';
 
 use Moota\SDK\Config;
 use Moota\SDK\PushCallbackHandler;

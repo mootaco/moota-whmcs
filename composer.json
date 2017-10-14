@@ -9,7 +9,7 @@
         "third party gateway",
         "moota.co"
     ],
-    "homepage": "http://moota.co/",
+    "homepage": "https://moota.co/",
     "license": "MIT",
     "authors": [
         {
@@ -18,20 +18,16 @@
             "role": "Developer"
         }
     ],
+    "config": {
+        "vendor-dir": "modules/gateways/moota/"
+    },
     "repositories": [
         {
             "type": "vcs",
-            "url": "file:///Volumes/WData/Projects/misc/moota/sdk/.git"
+            "url": "https://github.com/mootaco/php-sdk.git"
         }
     ],
     "require": {
-        "oomphinc/composer-installers-extender": "^1.1",
-        "moota/moota-sdk": "dev-master"
-    },
-    "extra": {
-        "installer-types": ["library"],
-        "installer-paths": {
-            "modules/gateways/{vendor}/{$name}/": ["library"]
-        }
+        "moota/moota-sdk": "~1.0"
     }
 }
