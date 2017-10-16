@@ -109,26 +109,23 @@ function moota_config()
             'FriendlyName' => 'Moota SDK Environment',
             'Type' => 'dropdown',
             'Size' => '255',
-            'Options' => ['production', 'testing'],
+            'Options' => [
+                'production' => 'Production',
+                'testing' => 'Testing',
+            ],
             'Default' => 'production',
             'Description' => 'Only change when asked by Moota',
         ],
 
-        /** string $serverAddress */
-        'mootaServerAddress' => [
-            'FriendlyName' => 'Moota Server Address',
-            'Type' => 'text',
-            'Size' => '255',
-            'Default' => 'app.moota.co',
-            'Description' => 'Only change when asked by Moota',
-        ],
-
         'mootaPushCallbackUri' => [
-            'FriendlyName' => 'Moota Server Address',
+            'FriendlyName' => 'Moota Push Notification receiver',
             'Type' => 'text',
             'Size' => '255',
-            'Default' => "http://{$baseUri}/modules/gateways/callback/moota.php",
-            'Description' => 'Masuk halaman edit bank di moota &gt; tab notifikasi &gt; edit "API Push Notif" &gt; lalu masukkan url ini',
+            'Default' => 'http://' . $baseUri . '/modules/gateways/'
+                . 'callback/moota.php',
+            'Description' => '<br>Masuk halaman edit bank di '
+                . 'moota &gt; tab notifikasi &gt; edit "API Push Notif" &gt; '
+                . 'lalu masukkan url ini',
         ],
     ];
 }

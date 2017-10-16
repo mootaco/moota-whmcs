@@ -50,7 +50,6 @@ Config::fromArray([
     'apiKey' => $gatewayParams['mootaApiKey'],
     'apiTimeout' => $gatewayParams['mootaApiTimeout'],
     'sdkMode' => strtolower( $gatewayParams['mootaEnvironment'] ),
-    'serverAddress' => $gatewayParams['mootaServerAddress'],
 ]);
 
 $mootaInflows = [];
@@ -142,13 +141,18 @@ if ( ! empty($invoices) && count($invoices) > 0 ) {
              * @param string|array $debugData    Data to log
              * @param string $transactionStatus  Status
              */
-            logTransaction($gatewayParams['name'], $payment, 'Paid');
+            logTransaction(
+                $gatewayParams['name'],
+                $payment,
+                'Payment applied'
+            );
         }
 
         $pushReplyData['status'] = 'ok';
     } else {
         $pushReplyData['status'] = 'not-ok';
-        $pushReplyData['status'] = 'No unpaid invoice matches current push data';
+        $pushReplyData['status'] = 'No unpaid invoice matches current push'
+            . ' data';
     }
 } else {
     $pushReplyData['status'] = 'not-ok';
