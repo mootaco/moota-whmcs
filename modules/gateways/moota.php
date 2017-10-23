@@ -43,7 +43,10 @@ function moota_MetaData()
 {
     return [
         'DisplayName' => 'Moota Payment Gateway',
-        'APIVersion' => '1.1', // Use API Version 1.1
+
+        // Uses WHMCS API Version 1.1
+        'APIVersion' => '1.1',
+
         'DisableLocalCredtCardInput' => true,
         'TokenisedStorage' => false,
     ];
@@ -92,7 +95,10 @@ function moota_config()
             'Type' => 'text',
             'Size' => '50',
             'Default' => '',
-            'Description' => 'Enter your Moota account API Key here',
+            'Description' => '<br>Dapatkan API Key melalui: '
+                        . '<a href="https://app.moota.co/settings?tab=api" '
+                        . 'target="_new">https://app.moota.co/settings?'
+                        . 'tab=api</a>',
         ],
 
         /** integer $apiTimeout */
@@ -118,7 +124,7 @@ function moota_config()
         ],
 
         'mootaPushCallbackUri' => [
-            'FriendlyName' => 'Moota Push Notification receiver',
+            'FriendlyName' => 'Moota Push Notification receiver (display only)',
             'Type' => 'text',
             'Size' => '255',
             'Default' => 'http://' . $baseUri . '/modules/gateways/'

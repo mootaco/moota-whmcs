@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "972a04fe104ee9a821f6444495660f59",
+    "content-hash": "05b42a01fc61cf296875b1025bdecfb4",
     "packages": [
         {
             "name": "composer/installers",
@@ -303,16 +303,16 @@
         },
         {
             "name": "moota/moota-sdk",
-            "version": "1.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mootaco/php-sdk.git",
-                "reference": "94e8d19f89d6d2751f776ebd2ff2befef6fb03fa"
+                "reference": "101b7d156b44d894cef882a6e400dbdc87545e6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mootaco/php-sdk/zipball/94e8d19f89d6d2751f776ebd2ff2befef6fb03fa",
-                "reference": "94e8d19f89d6d2751f776ebd2ff2befef6fb03fa",
+                "url": "https://api.github.com/repos/mootaco/php-sdk/zipball/101b7d156b44d894cef882a6e400dbdc87545e6c",
+                "reference": "101b7d156b44d894cef882a6e400dbdc87545e6c",
                 "shasum": ""
             },
             "require": {
@@ -329,7 +329,8 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "helpers.php"
+                    "helpers.php",
+                    "constants.php"
                 ],
                 "psr-4": {
                     "Moota\\SDK\\": "src/"
@@ -360,10 +361,10 @@
             ],
             "description": "PHP SDK for moota.co",
             "support": {
-                "source": "https://github.com/mootaco/php-sdk/tree/1.0.2",
+                "source": "https://github.com/mootaco/php-sdk/tree/master",
                 "issues": "https://github.com/mootaco/php-sdk/issues"
             },
-            "time": "2017-10-10T06:40:39+00:00"
+            "time": "2017-10-18T04:00:40+00:00"
         },
         {
             "name": "psr/http-message",
@@ -419,7 +420,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "moota/moota-sdk": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

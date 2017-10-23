@@ -3,7 +3,6 @@
     "description": "Moota Payment Gateway module for WHMCS",
     "keywords": [
         "whmcs",
-        "web host automation platform",
         "third party gateway module",
         "gateway module",
         "third party gateway",
@@ -19,7 +18,7 @@
         }
     ],
     "config": {
-        "vendor-dir": "modules/gateways/moota/"
+        "vendor-dir": "modules/gateways/moota/lib"
     },
     "repositories": [
         {
@@ -28,6 +27,11 @@
         }
     ],
     "require": {
-        "moota/moota-sdk": "~1.0"
+        "moota/moota-sdk": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Moota\\WHMCS\\": "modules/gateways/moota/whmcs"
+        }
     }
 }

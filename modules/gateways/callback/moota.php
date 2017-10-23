@@ -28,11 +28,12 @@ $pwd = getcwd();
 require_once $pwd . '/../../../init.php';
 require_once $pwd . '/../../../includes/gatewayfunctions.php';
 require_once $pwd . '/../../../includes/invoicefunctions.php';
-require_once $pwd . '/../moota/autoload.php';
+require_once $pwd . '/../moota/lib/autoload.php';
 
-use Moota\SDK\Config;
-use Moota\SDK\PushCallbackHandler;
-use WHMCS\Database\Capsule;
+// $klasses = get_declared_classes();
+// sort($klasses);
+// echo '<pre>', print_r($klasses, true), '</pre>';
+// exit;
 
 // Detect module name from filename.
 $gatewayModuleName = basename(__FILE__, '.php');
@@ -46,117 +47,66 @@ if (!$gatewayParams['type']) {
     die('Module Not Activated');
 }
 
-Config::fromArray([
+Moota\SDK\Config::fromArray([
     'apiKey' => $gatewayParams['mootaApiKey'],
     'apiTimeout' => $gatewayParams['mootaApiTimeout'],
     'sdkMode' => strtolower( $gatewayParams['mootaEnvironment'] ),
 ]);
 
-$mootaInflows = [];
-$whereInflowAmounts = [];
-$payments = [];
+$handler = Moota\SDK\PushCallbackHandler::createDefault()
+    ->setTransactionFetcher(new Moota\WHMCS\InvoiceFetcher)
+    ->setPaymentMatcher(new Moota\WHMCS\InvoiceMatcher)
+;
 
-$pushReplyData = [];
+$payments = $handler->handle();
 
-$transactions = PushCallbackHandler::createDefault()->decode();
+// finally add payment and log to gateway logs
+foreach ($payments as $payment) {
+    /**
+     * Add Invoice Payment.
+     *
+     * Applies a payment transaction entry to the given invoice ID.
+     *
+     * @param int $invoiceId         Invoice ID
+     * @param string $transactionId  Transaction ID
+     * @param float $paymentAmount   Amount paid (defaults to full balance)
+     * @param float $paymentFee      Payment fee (optional)
+     * @param string $gatewayModule  Gateway module name
+     */
+    addInvoicePayment(
+        $payment['invoiceId'],
+        $payment['transactionId'],
+        $payment['amount'],
+        0,
+        $gatewayModuleName
+    );
 
-// only CR
-foreach ($transactions as $trans) {
-    if ($trans['type'] === 'CR') {
-        $mootaInflows[] = $trans;
-        $whereInflowAmounts[] = $trans['amount'];
-    }
+    /**
+     * Log Transaction.
+     *
+     * Add an entry to the Gateway Log for debugging purposes.
+     *
+     * The debug data can be a string or an array. In the case of an
+     * array it will be
+     *
+     * @param string $gatewayName        Display label
+     * @param string|array $debugData    Data to log
+     * @param string $transactionStatus  Status
+     */
+    logTransaction(
+        $gatewayParams['name'],
+        $payment,
+        'Payment applied'
+    );
 }
 
-$invoices = Capsule::table('tblinvoices')
-    ->whereIn('total', $whereInflowAmounts)
-    ->where('status', 'Unpaid')
-    ->get();
-
-if ( ! empty($invoices) && count($invoices) > 0 ) {
-    // match whmcs invoice with moota transactions
-    foreach ($invoices as $invoice) {
-        $transAmount = (int) str_replace('.00', '', $invoice->total . '');
-        $tmpPayment = null;
-    
-        foreach ($mootaInflows as $mootaInflow) {
-            if ($mootaInflow['amount'] === $transAmount) {
-                $tmpPayment = $mootaInflow;
-                break;
-            }
-        }
-    
-        $payments[]  = [
-            // transactionId:
-            //   { invoiceId }-{ moota:id }-{ moota:account_number }
-            'transactionId' => implode('-', [
-                $invoice->id, $tmpPayment['id'], $tmpPayment['account_number']
-            ]),
-            'invoiceId' => $invoice->id,
-            'mootaId' => $tmpPayment['id'],
-            'mootaAccNo' => $tmpPayment['account_number'],
-            'amount' => $tmpPayment['amount'],
-            'mootaAmount' => $tmpPayment['amount'],
-            'invoiceAmount' => $invoice->total,
-        ];
-    }
-
-    $pushReplyData['data'] = [
-        'dataCount' => count($transactions),
-        'inflowCount' => count($mootaInflows),
-        'payments' => $payments,
-    ];
-
-    if ( count($payments) > 0 ) {
-        // finally add payment and log to gateway logs
-        foreach ($payments as $payment) {
-            /**
-             * Add Invoice Payment.
-             *
-             * Applies a payment transaction entry to the given invoice ID.
-             *
-             * @param int $invoiceId         Invoice ID
-             * @param string $transactionId  Transaction ID
-             * @param float $paymentAmount   Amount paid (defaults to full balance)
-             * @param float $paymentFee      Payment fee (optional)
-             * @param string $gatewayModule  Gateway module name
-             */
-            addInvoicePayment(
-                $payment['invoiceId'],
-                $payment['transactionId'],
-                $payment['amount'],
-                0,
-                $gatewayModuleName
-            );
-
-            /**
-             * Log Transaction.
-             *
-             * Add an entry to the Gateway Log for debugging purposes.
-             *
-             * The debug data can be a string or an array. In the case of an
-             * array it will be
-             *
-             * @param string $gatewayName        Display label
-             * @param string|array $debugData    Data to log
-             * @param string $transactionStatus  Status
-             */
-            logTransaction(
-                $gatewayParams['name'],
-                $payment,
-                'Payment applied'
-            );
-        }
-
-        $pushReplyData['status'] = 'ok';
-    } else {
-        $pushReplyData['status'] = 'not-ok';
-        $pushReplyData['status'] = 'No unpaid invoice matches current push'
-            . ' data';
-    }
+if ( count($payments) > 0 ) {
+    $pushReplyData['status'] = 'ok';
+    $pushReplyData['data'] = [ 'count' => count($payments) ];
 } else {
     $pushReplyData['status'] = 'not-ok';
-    $pushReplyData['error'] = 'No unpaid invoice found';
+    $pushReplyData['status'] = 'No unpaid invoice matches current push'
+        . ' data';
 }
 
 header('Content-Type: application/json');
