@@ -39,8 +39,7 @@ if (!defined("WHMCS")) {
  *
  * @return array
  */
-function moota_MetaData()
-{
+function moota_MetaData() {
     return [
         'DisplayName' => 'Moota Payment Gateway',
 
@@ -72,8 +71,7 @@ function moota_MetaData()
  *
  * @return array
  */
-function moota_config()
-{
+function moota_config() {
     $paths = explode('/', dirname( $_SERVER['DOCUMENT_URI'] ));
     array_pop($paths);
     $paths = implode('/', $paths);
@@ -116,8 +114,8 @@ function moota_config()
             'Type' => 'dropdown',
             'Size' => '255',
             'Options' => [
-                'production' => 'Production',
-                'testing' => 'Testing',
+                'production' => 'Live',
+                'testing' => 'Sandbox',
             ],
             'Default' => 'production',
             'Description' => 'Only change when asked by Moota',
@@ -127,6 +125,8 @@ function moota_config()
             'FriendlyName' => 'Moota Push Notification receiver (display only)',
             'Type' => 'text',
             'Size' => '255',
+            'Disabled' => 'Disabled',
+            'Readonly' => 'Readonly',
             'Default' => 'http://' . $baseUri . '/modules/gateways/'
                 . 'callback/moota.php',
             'Description' => '<br>Masuk halaman edit bank di '
@@ -150,8 +150,7 @@ function moota_config()
  *
  * @return string
  */
-function moota_link($params)
-{
+function moota_link($params) {
     return 'Not implemented yet';
 }
 
@@ -166,8 +165,7 @@ function moota_link($params)
  *
  * @return array Transaction response status
  */
-function moota_refund($params)
-{
+function moota_refund($params) {
     return [];
 }
 
@@ -184,7 +182,6 @@ function moota_refund($params)
  *
  * @return array Transaction response status
  */
-function moota_cancelSubscription($params)
-{
+function moota_cancelSubscription($params) {
     return [];
 }

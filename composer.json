@@ -27,7 +27,7 @@
         }
     ],
     "require": {
-        "moota/moota-sdk": "dev-master"
+        "moota/moota-sdk": "1.1.*"
     },
     "autoload": {
         "psr-4": {

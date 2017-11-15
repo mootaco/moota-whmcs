@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "05b42a01fc61cf296875b1025bdecfb4",
+    "content-hash": "aa91e2ed2dd567cb9f44f16c7dab7757",
     "packages": [
         {
             "name": "composer/installers",
@@ -303,16 +303,16 @@
         },
         {
             "name": "moota/moota-sdk",
-            "version": "dev-master",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mootaco/php-sdk.git",
-                "reference": "101b7d156b44d894cef882a6e400dbdc87545e6c"
+                "reference": "52de2c69182ec0ce7c593907a3b6a883ece59d74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mootaco/php-sdk/zipball/101b7d156b44d894cef882a6e400dbdc87545e6c",
-                "reference": "101b7d156b44d894cef882a6e400dbdc87545e6c",
+                "url": "https://api.github.com/repos/mootaco/php-sdk/zipball/52de2c69182ec0ce7c593907a3b6a883ece59d74",
+                "reference": "52de2c69182ec0ce7c593907a3b6a883ece59d74",
                 "shasum": ""
             },
             "require": {
@@ -361,10 +361,10 @@
             ],
             "description": "PHP SDK for moota.co",
             "support": {
-                "source": "https://github.com/mootaco/php-sdk/tree/master",
+                "source": "https://github.com/mootaco/php-sdk/tree/1.1.0",
                 "issues": "https://github.com/mootaco/php-sdk/issues"
             },
-            "time": "2017-10-18T04:00:40+00:00"
+            "time": "2017-11-13T06:45:16+00:00"
         },
         {
             "name": "psr/http-message",
@@ -420,9 +420,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "moota/moota-sdk": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

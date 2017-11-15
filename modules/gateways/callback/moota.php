@@ -1,20 +1,6 @@
 <?php
 /**
- * WHMCS Sample Payment Callback File
- *
- * This sample file demonstrates how a payment gateway callback should be
- * handled within WHMCS.
- *
- * It demonstrates verifying that the payment gateway module is active,
- * validating an Invoice ID, checking for the existence of a Transaction ID,
- * Logging the Transaction for debugging and Adding Payment to an Invoice.
- *
- * For more information, please refer to the online documentation.
- *
- * @see https://developers.whmcs.com/payment-gateways/callbacks/
- *
- * @copyright Copyright (c) WHMCS Limited 2017
- * @license http://www.whmcs.com/license/ WHMCS Eula
+ * MootaPay Payment Gateway - Push Notification Handler
  */
 
 if ( strtolower($_SERVER['REQUEST_METHOD']) !== 'post' ) {
@@ -29,11 +15,6 @@ require_once $pwd . '/../../../init.php';
 require_once $pwd . '/../../../includes/gatewayfunctions.php';
 require_once $pwd . '/../../../includes/invoicefunctions.php';
 require_once $pwd . '/../moota/lib/autoload.php';
-
-// $klasses = get_declared_classes();
-// sort($klasses);
-// echo '<pre>', print_r($klasses, true), '</pre>';
-// exit;
 
 // Detect module name from filename.
 $gatewayModuleName = basename(__FILE__, '.php');
@@ -54,61 +35,17 @@ Moota\SDK\Config::fromArray([
 ]);
 
 $handler = Moota\SDK\PushCallbackHandler::createDefault()
-    ->setTransactionFetcher(new Moota\WHMCS\InvoiceFetcher)
-    ->setPaymentMatcher(new Moota\WHMCS\InvoiceMatcher)
+    ->setOrderFetcher(new Moota\WHMCS\InvoiceFetcher(
+        new WHMCS\Database\Capsule
+    ))
+    ->setOrderMatcher(new Moota\WHMCS\InvoiceMatcher)
+    ->setOrderFullfiler(new Moota\WHMCS\InvoiceFullfiler(
+        $gatewayModuleName, $gatewayParams
+    ))
 ;
 
-$payments = $handler->handle();
-
-// finally add payment and log to gateway logs
-foreach ($payments as $payment) {
-    /**
-     * Add Invoice Payment.
-     *
-     * Applies a payment transaction entry to the given invoice ID.
-     *
-     * @param int $invoiceId         Invoice ID
-     * @param string $transactionId  Transaction ID
-     * @param float $paymentAmount   Amount paid (defaults to full balance)
-     * @param float $paymentFee      Payment fee (optional)
-     * @param string $gatewayModule  Gateway module name
-     */
-    addInvoicePayment(
-        $payment['invoiceId'],
-        $payment['transactionId'],
-        $payment['amount'],
-        0,
-        $gatewayModuleName
-    );
-
-    /**
-     * Log Transaction.
-     *
-     * Add an entry to the Gateway Log for debugging purposes.
-     *
-     * The debug data can be a string or an array. In the case of an
-     * array it will be
-     *
-     * @param string $gatewayName        Display label
-     * @param string|array $debugData    Data to log
-     * @param string $transactionStatus  Status
-     */
-    logTransaction(
-        $gatewayParams['name'],
-        $payment,
-        'Payment applied'
-    );
-}
-
-if ( count($payments) > 0 ) {
-    $pushReplyData['status'] = 'ok';
-    $pushReplyData['data'] = [ 'count' => count($payments) ];
-} else {
-    $pushReplyData['status'] = 'not-ok';
-    $pushReplyData['status'] = 'No unpaid invoice matches current push'
-        . ' data';
-}
+$statusData = $handler->handle();
 
 header('Content-Type: application/json');
 
-die( json_encode( $pushReplyData ) );
+die( json_encode( $statusData ) );
