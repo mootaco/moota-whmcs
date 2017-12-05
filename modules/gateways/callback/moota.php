@@ -25,6 +25,7 @@ $gatewayParams = getGatewayVariables($gatewayModuleName);
 // Die if module is not active.
 if (!$gatewayParams['type']) {
     http_response_code(501);
+
     die('Module Not Activated');
 }
 

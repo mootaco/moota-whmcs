@@ -126,12 +126,18 @@ function moota_config() {
             'Type' => 'text',
             'Size' => '255',
             'Disabled' => 'Disabled',
-            'Readonly' => 'Readonly',
             'Default' => 'http://' . $baseUri . '/modules/gateways/'
                 . 'callback/moota.php',
             'Description' => '<br>Masuk halaman edit bank di '
                 . 'moota &gt; tab notifikasi &gt; edit "API Push Notif" &gt; '
                 . 'lalu masukkan url ini',
+        ],
+
+        'mootaBankTransfer' => [
+            'FriendlyName' => 'Bank Transfer Instructions',
+            'Type' => 'textarea',
+            'Rows' => '5',
+            'Cols' => '75',
         ],
     ];
 }
@@ -151,7 +157,7 @@ function moota_config() {
  * @return string
  */
 function moota_link($params) {
-    return 'Not implemented yet';
+    return '<p>' . $params['mootaBankTransfer'] . '</p>';
 }
 
 /**
